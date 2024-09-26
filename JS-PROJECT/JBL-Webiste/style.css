@@ -1,0 +1,268 @@
+* {
+    padding: 0px;
+    margin: 0px;
+
+}
+
+i {
+    color: black;
+    font-size: 20px;
+}
+
+#navv {
+    background-color: #ffedeb;
+    padding-top: 0px;
+}
+
+#swip {
+    padding-top: 0px;
+}
+
+#cartpage
+{
+    cursor: pointer;
+}
+/* #word
+{
+    font-weight: 600;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 20px;
+} */
+a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-weight: 800;
+}
+
+#word:hover {
+    text-decoration: underline;
+    color: rgb(0, 0, 0);
+}
+
+#pre {
+    font-size: 20px;
+}
+
+/* #mini-cont
+{
+    display: flex;
+} */
+#dark {
+    background-color: #121212;
+}
+
+h6:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+#image {
+    height: 900px;
+    width: 100%;
+    position: relative;
+    /* Add position relative for the ::after pseudo-element */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212;
+}
+
+#image::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://t3.ftcdn.net/jpg/04/12/47/76/360_F_412477644_k8JFeErj5OSJoLyjNtRxbmdGyvwUxcfX.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    /* Adjust opacity value as needed */
+}
+
+#word2 {
+    font-size: 80px;
+    color: #ffffff;
+}
+
+#change1,
+#change2,
+#change3,
+#change4 {
+    color: #fff;
+    margin: 10px;
+}
+
+#change1:hover {
+    color: #0e03a8;
+}
+
+#change2:hover {
+    color: #808080;
+}
+
+#change3:hover {
+    color: #c300ff;
+}
+
+#change4:hover {
+    color: #ff0000;
+}
+
+.dropdown-menu:hover {
+    display: block;
+}
+
+#Footer {
+    height: 500px;
+    background: #101010;
+}
+
+#foot {
+    margin-top: 30px;
+    height: 400px;
+    background: #101010;
+}
+
+h1:hover {
+    cursor: pointer;
+    color: #ff0000;
+}
+
+h5:hover {
+    color: #ff0000;
+    text-decoration: underline;
+}
+
+/*  */
+ 
+
+#product-row {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px; /* Adjust gap as needed */
+
+  }
+  .card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+    
+  }
+
+  @media (min-width: 576px) {
+    #product-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    #product-row {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    #product-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    #product-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+.btn-danger,i
+{
+    margin: 5px;
+    color: white;
+}
+.product-btn {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px; /* Adds space between buttons */
+  }
+
+
+
+  
+/* Search icnon */
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.navbar {
+    background-color: black;
+}
+
+.nav-link {
+    font-family: 'Open Sans', sans-serif;
+    color: orange;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+.navbar-brand img {
+    height: 60px;
+}
+
+.navbar-toggler-icon {
+    background-image: none;
+    color: orange;
+}
+
+.navbar-toggler {
+    border-color: orange;
+}
+
+.search-form {
+    position: relative;
+    align-items: center;
+}
+
+.search-input {
+    transition: all 0.3s ease;
+    width: 150px;
+    height: 38px;
+    border: 1px solid orange;
+    border-radius: 5px;
+    margin-right: 10px;
+    padding-left: 10px;
+    background-color: transparent;
+    color: white;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: white;
+    width: 200px; /* Expand input on focus */
+}
+
+.fa-magnifying-glass,
+.fa-circle-user {
+    font-size: 1.2em;
+    color: orange;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.fa-magnifying-glass:hover,
+.fa-circle-user:hover {
+    color: white;
+}

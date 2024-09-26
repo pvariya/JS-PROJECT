@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .card {
+            width: 18rem;
+            margin-top: 20px;
+        }
+
+        .container-fluid {
+            padding-top: 20px;
+        }
+
+        .search-input {
+            display: none;
+            width: 200px;
+            margin-left: 10px;
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-results {
+            display: none;
+            position: absolute;
+            top: 60px;
+            background-color: white;
+            border: 1px solid #ddd;
+            z-index: 1000;
+            width: 200px;
+        }
+
+        .search-results p {
+            padding: 8px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .search-results p:hover {
+            background-color: #f0f0f0;
+        }
+        i{
+            cursor: pointer;
+        }
+        .sidebar {
+            margin-top: 77px;
+            width: 250px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);   
+        }
+
+        .sidebar button {
+            background-color: #DC3545;
+            margin: 10px 0;
+            height: 50px;
+            width: 100%;
+            color: #fff;
+            border-radius: 10px;
+            border: none;
+        }
+         #parentnav {
+            z-index: 3;
+            position: fixed;
+            width: 100%;
+        }
+        #productRow
+        {
+            padding-left: 300px;
+            padding-top: 100px;
+        }
+        #price {
+            margin-top: 100px;
+        }
+        .btn-primary:hover
+        {
+            /* background-color: #000; */
+            background-color: #88000e;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" id="parentnav">
+        <div class="container-fluid" id="navv">
+            <a class="navbar-brand" href="#"><img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/JBL_logo.svg/2500px-JBL_logo.svg.png"
+                    alt="" height="60px"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="./index.html" id="word">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./product.html" id="word">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./myproduct.html" id="word">MyProduct</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./cart.html" id="word">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./sign.html" id="word">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./QRCODE/getapp.html" id="word">GetApp</a>
+                    </li>
+
+                </ul>
+                <div class="search-form d-flex" role="search">
+                    <div class="row">
+                        <div class="col-4"><i id="shop" class="fa-solid fa-cart-shopping text-dark" id="cartpage"></i>
+                        </div>
+                        <div class="col-4"><i id="sign" class="fa-solid fa-circle-user text-dark"></i></div>
+                        <div class="col-4"><i id="search" class="fa-solid fa-magnifying-glass text-dark"></i></div>
+                    </div>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search...">
+                    <div id="searchResults" class="search-results"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="sidebar">
+        <form class="d-flex" role="search" id="search-form">
+        </form>
+        <div class="container mt-4">
+            <button id="sortPriceLowHigh" class="btn btn-primary">Low to High <i class="fa-solid fa-arrow-trend-up"></i></button>
+            <button id="sortPriceHighLow" class="btn btn-primary">High to Low <i class="fa-solid fa-arrow-trend-down"></i></button>
+            <button id="sortRatingHighLow" class="btn btn-primary">High Rating <i class="fa-solid fa-star"></i></button>
+            <button id="sortRatingLowHigh" class="btn btn-primary">Low Rating <i class="fa-solid fa-star-half"></i></button>
+           
+            <button id="clearSorting" class="btn btn-secondary">View Cart  <i class="fa-solid fa-cart-shopping cart-icon"></i></button>
+        </div>
+        
+    </div>
+   
+        <div class="row" id="productRow">
+       
+    </div>
+
+    <script type="module">
+        // Product data with ratings added
+    
+        document.addEventListener('DOMContentLoaded', function () {
+    // Sample products data
+    const products = [
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwfea2c1ef/1.JBL_Tune_770NC_Product%20Image_Hero_Black.png?sw=320&sh=320',
+                cardTitle: 'JBL Tune 770NC',
+                cardText: 'Adaptive Noise Cancellation wireless',
+                textPrimary: 'Wireless',
+                price: '$649',
+                rating: 4.5,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwadfd9daa/1_JBL_FLIP6_HERO_BLUE_29399_x1.png?sw=320&sh=320',
+                cardTitle: 'JBL Flip 6',
+                cardText: 'Adaptive Noise Cancellation wireless',
+                textPrimary: 'Wireless',
+                price: '$150',
+                rating: 4.0,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw1b7739f6/01.JBL_Tune%20Beam_Product%20Image_Hero_Black.png?sw=320&sh=320',
+                cardTitle: 'JBL Tune Beam',
+                cardText: 'Adaptive Noise Cancellation wireless',
+                textPrimary: 'Wireless',
+                price: '$200',
+                rating: 4.2,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwb44a1b56/1.JBL_Live%20Pro%202_Product%20image_Hero_Blue.png?sw=320&sh=320',
+                cardTitle: 'JBL Live Pro Product',
+                cardText: 'True wireless product with voice cancellation',
+                textPrimary: 'Wireless',
+                price: '$25.44',
+                rating: 3.8,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw0c49e244/JBL_GO_4_HERO_RED_48157_x4%20(1).png?sw=320&sh=320',
+                cardTitle: 'JBL Go 4',
+                cardText: 'True wireless product with voice cancellation',
+                textPrimary: 'Wireless',
+                price: '$30.45',
+                rating: 3.5,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwe8214719/JBL_Tune_310C_ProductImage_Hero_Blue.png?sw=320&sh=320',
+                cardTitle: 'JBL Tune 305 USB',
+                cardText: 'True wireless product with voice cancellation',
+                textPrimary: 'Wireless',
+                price: '$35.78',
+                rating: 4.1,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw1fc9b516/JBL_AUTHENTICS_500_HERO_42813_x3.png?sw=320&sh=320',
+                cardTitle: 'JBL Authenics 500',
+                cardText: 'True wireless product with voice cancellation',
+                textPrimary: 'Wireless',
+                price: '$30.45',
+                rating: 4.7,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw1896cd87/JBL_Tune_305C_USBC_Product%20Image_Hero_Black.png?sw=320&sh=320',
+                cardTitle: 'JBL Tune 310 USB',
+                cardText: 'True wireless product with voice cancellation',
+                textPrimary: 'Wireless',
+                price: '$35.78',
+                rating: 4.3,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwa6df911e/01.JBL_Live%20Beam%203_Product%20Image_Feature%20Screen%2002_Silver.png?sw=320&sh=320',
+                cardTitle: 'JBL Live Bean 3',
+                cardText: 'Display with voice cancellation',
+                textPrimary: 'Wireless',
+                price: '$89.45',
+                rating: 4.6,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw852cb4c7/JBL_TOUR_One%20M2_Product%20Image_Hero_Champagne.png?sw=320&sh=320',
+                cardTitle: 'JBL HeadPhone USB',
+                cardText: 'True wireless product with voice cancellation',
+                textPrimary: 'Wireless',
+                price: '$25.78',
+                rating: 4.4,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw8579c812/1.JBL_QUANTUM_910_Wireless_Product%20Image_Hero%20Mic%20Down.png?sw=320&sh=320',
+                cardTitle: 'Gamming HeadPhone',
+                cardText: 'True wireless product High Base Quantity',
+                textPrimary: 'Wireless',
+                price: '$30.45',
+                rating: 4.0,
+                orderLink: '#'
+            },
+            {
+                img: 'https://in.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw89001d20/1_JBL_PULSE_5_HERO_34364_x2.png?sw=300&sh=300',
+                cardTitle: 'JBL Part Speaker',
+                cardText: 'True wireless product with High Base Quantity',
+                textPrimary: 'Wireless',
+                price: '$32.78',
+                rating: 4.2,
+                orderLink: '#'
+            }
+        ];
+  
+
+    function renderProducts(products) {
+        const productRow = document.getElementById('productRow');
+        productRow.innerHTML = '';
+        products.forEach((product, index) => {
+            const productHTML = `
+                <div class="col-12 col-sm-12 col-md-6 col-xl-3 d-flex justify-content-center">
+                    <div class="card">
+                        <img src="${product.img}" class="card-img-top" alt="${product.cardTitle}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.cardTitle}</h5>
+                            <p class="card-text">${product.cardText}</p>
+                            <h6 class="text-primary">${product.textPrimary}</h6>
+                            <h5 id="price${index}">${product.price}</h5>
+                            <h6>Rating: ${product.rating} <i class="fas fa-star" style="color:gold;"></i></h6>
+                            <a href="#" class="btn btn-danger viewProduct" data-id="${index}">Order Now</a>
+                            <a href="#" class="btn btn-danger addToCart" data-id="${index}" data-price="${parseFloat(product.price.replace('$', ''))}">Add To Cart <i class="fa-solid fa-cart-shopping text-dark"></i></a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            productRow.insertAdjacentHTML('beforeend', productHTML);
+        });
+
+        // Event listeners for product actions
+        document.querySelectorAll('.viewProduct').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const productId = parseInt(this.getAttribute('data-id'));
+
+                if (isUserSignedUp()) {
+                    const product = products[productId];
+                    addToMyProducts(product);
+                    window.location.href = "product.html";
+                } else {
+                    alert('Please sign up to order products.');
+                    window.location.href = "sign.html";
+                }
+            });
+        });
+
+        document.querySelectorAll('.addToCart').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const productId = parseInt(this.getAttribute('data-id'));
+                const productPrice = parseFloat(this.getAttribute('data-price'));
+                addToCart(productId, productPrice);
+            });
+        });
+    }
+
+    // Check if the user is signed up
+    function isUserSignedUp() {
+        return localStorage.getItem('isUserSignedUp') === 'true'; // Match storage type with sign-in script
+    }
+
+    // Add the product to "My Products"
+    function addToMyProducts(product) {
+        let myProducts = JSON.parse(localStorage.getItem('myProducts')) || [];
+        myProducts.push(product);
+        localStorage.setItem('myProducts', JSON.stringify(myProducts));
+    }
+
+    // Add product to cart
+    function addToCart(productId, productPrice) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let product = products[productId];
+        product.quantity = 1;
+        product.totalPrice = productPrice;
+
+        let existingProductIndex = cart.findIndex(item => item.cardTitle === product.cardTitle);
+
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].quantity += 1;
+            cart[existingProductIndex].totalPrice = (parseFloat(cart[existingProductIndex].price.replace('$', '')) * cart[existingProductIndex].quantity).toFixed(2);
+        } else {
+            cart.push(product);
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert('Product added to cart!');
+    }
+
+    // Sort products by price
+    function sortByPrice(order) {
+        const sortedProducts = products.slice().sort((a, b) => {
+            const priceA = parseFloat(a.price.replace('$', ''));
+            const priceB = parseFloat(b.price.replace('$', ''));
+            return order === 'asc' ? priceA - priceB : priceB - priceA;
+        });
+        renderProducts(sortedProducts);
+    }
+
+    // Sort products by rating
+    function sortByRating(order) {
+        const sortedProducts = products.slice().sort((a, b) => {
+            return order === 'asc' ? a.rating - b.rating : b.rating - a.rating;
+        });
+        renderProducts(sortedProducts);
+    }
+
+    // Clear sorting (or reset view)
+    function clearSorting() {
+        window.location.href = "cart.html";
+    }
+
+    // Event listeners for sorting and clearing
+    document.getElementById('sortPriceLowHigh').addEventListener('click', () => sortByPrice('asc'));
+    document.getElementById('sortPriceHighLow').addEventListener('click', () => sortByPrice('desc'));
+    document.getElementById('sortRatingLowHigh').addEventListener('click', () => sortByRating('asc'));
+    document.getElementById('sortRatingHighLow').addEventListener('click', () => sortByRating('desc'));
+    document.getElementById('clearSorting').addEventListener('click', clearSorting);
+
+    // Initial render
+    renderProducts(products);
+});
+
+    </script>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

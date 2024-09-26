@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <style>
+    body {
+      /* background: #e1e7ec; */
+      background: #dfe7ef;
+      font-family: "Bitter", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      stroke-width: 0;
+      stroke: currentColor;
+      fill: currentColor;
+    }
+
+    .wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      /* background: url(../img/bg.png) no-repeat center; */
+      background-size: cover;
+    }
+
+    @media screen and (max-width: 700px),
+    (max-height: 500px) {
+      .wrapper {
+        flex-wrap: wrap;
+        flex-direction: column;
+      }
+    }
+
+    .player {
+      background: #eef3f7;
+      width: 410px;
+      min-height: 480px;
+      /* box-shadow: 0px 55px 75px -10px rgba(76, 70, 124, 0.5); */
+      /* box-shadow: 0px 55px 105px 10px rgba(76, 70, 124, 0.35); */
+      box-shadow: 0px 15px 35px -5px rgba(50, 88, 130, 0.32);
+      border-radius: 15px;
+      padding: 30px;
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .player {
+        width: 95%;
+        padding: 20px;
+        margin-top: 75px;
+        min-height: initial;
+        padding-bottom: 30px;
+        max-width: 400px;
+      }
+    }
+
+    .player__top {
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+      z-index: 4;
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .player__top {
+        flex-wrap: wrap;
+      }
+    }
+
+    .player-cover {
+      width: 300px;
+      height: 300px;
+      margin-left: -70px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      border-radius: 15px;
+      /* transform: perspective(512px) translate3d(0, 0, 0); */
+      /* transition: all .4s cubic-bezier(.125, .625, .125, .875); */
+      z-index: 1;
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .player-cover {
+        margin-top: -70px;
+        margin-bottom: 25px;
+        width: 290px;
+        height: 230px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    .player-cover__item {
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .player-cover__item:before {
+      content: "";
+      background: inherit;
+      width: 100%;
+      height: 100%;
+      box-shadow: 0px 10px 40px 0px rgba(76, 70, 124, 0.5);
+      display: block;
+      z-index: 1;
+      position: absolute;
+      top: 30px;
+      transform: scale(0.9);
+      filter: blur(10px);
+      opacity: 0.9;
+      border-radius: 15px;
+    }
+
+    .player-cover__item:after {
+      content: "";
+      background: inherit;
+      width: 100%;
+      height: 100%;
+      box-shadow: 0px 10px 40px 0px rgba(76, 70, 124, 0.5);
+      display: block;
+      z-index: 2;
+      position: absolute;
+      border-radius: 15px;
+    }
+
+    .player-cover__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0px 10px 40px 0px rgba(76, 70, 124, 0.5);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .player-controls {
+      flex: 1;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .player-controls {
+        flex-direction: row;
+        padding-left: 0;
+        width: 100%;
+        flex: unset;
+      }
+    }
+
+    .player-controls__item {
+      display: inline-flex;
+      font-size: 30px;
+      padding: 5px;
+      margin-bottom: 10px;
+      color: #acb8cc;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.3s ease-in-out;
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .player-controls__item {
+        font-size: 26px;
+        padding: 5px;
+        margin-right: 10px;
+        color: #acb8cc;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        margin-bottom: 0;
+      }
+    }
+
+    .player-controls__item::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #fff;
+      transform: scale(0.5);
+      opacity: 0;
+      box-shadow: 0px 5px 10px 0px rgba(76, 70, 124, 0.2);
+      transition: all 0.3s ease-in-out;
+      transition: all 0.4s cubic-bezier(0.35, 0.57, 0.13, 0.88);
+    }
+
+    @media screen and (min-width: 500px) {
+      .player-controls__item:hover {
+        color: #532ab9;
+      }
+    }
+
+    @media screen and (min-width: 500px) {
+      .player-controls__item:hover::before {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .player-controls__item:active {
+        color: #532ab9;
+      }
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .player-controls__item:active::before {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+
+    .player-controls__item .icon {
+      position: relative;
+      z-index: 2;
+    }
+
+    .player-controls__item.-xl {
+      margin-bottom: 0;
+      font-size: 95px;
+      /* filter: drop-shadow(0 2px 8px rgba(172, 184, 204, 0.3)); */
+      /* filter: drop-shadow(0 9px 6px rgba(172, 184, 204, 0.35)); */
+      filter: drop-shadow(0 11px 6px rgba(172, 184, 204, 0.45));
+      color: #fff;
+      width: auto;
+      height: auto;
+      display: inline-flex;
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .player-controls__item.-xl {
+        margin-left: auto;
+        font-size: 75px;
+        margin-right: 0;
+      }
+    }
+
+    .player-controls__item.-xl:before {
+      display: none;
+    }
+
+    .player-controls__item.-favorite.active {
+      color: red;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    [v-cloak]>* {
+      display: none;
+    }
+
+    .progress {
+      width: 100%;
+      margin-top: -15px;
+      user-select: none;
+    }
+
+    .progress__top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .progress__duration {
+      color: #71829e;
+      font-weight: 700;
+      font-size: 20px;
+      opacity: 0.5;
+    }
+
+    .progress__time {
+      color: #71829e;
+      font-weight: 700;
+      font-size: 25px;
+    }
+
+    .progress__bar {
+      display: inline-block;
+      width: 100%;
+      height: 12px;
+      position: relative;
+      margin-top: 2px;
+      background: #d9e1ed;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .progress__current {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      background: #3d5eff;
+    }
+
+    .progress__nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .progress__repeat {
+      font-size: 20px;
+      color: #71829e;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .progress__repeat {
+        font-size: 18px;
+      }
+    }
+
+    .progress__repeat:hover {
+      opacity: 0.7;
+    }
+
+    .progress__volume {
+      width: 165px;
+      padding-left: 15px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      z-index: 2;
+    }
+
+    @media screen and (max-width: 576px),
+    (max-height: 500px) {
+      .progress__volume {
+        width: 140px;
+        padding-left: 5px;
+      }
+    }
+
+    .progress__volume .icon {
+      color: #71829e;
+      font-size: 25px;
+    }
+
+    .progress__volume .icon:active {
+      opacity: 0.7;
+    }
+
+    .progress__volume .icon.volume-none {
+      color: #d9e1ed;
+    }
+
+    .progress__volume-bar {
+      width: 100%;
+      height: 4px;
+      background: #d9e1ed;
+      border-radius: 2px;
+      position: relative;
+      margin-left: 10px;
+    }
+
+    .progress__volume-bar-item {
+      width: 100%;
+      height: 100%;
+      background: #3d5eff;
+      border-radius: 2px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  </style>
+  <div class="wrapper" id="app">
+    <div class="player">
+      <div class="player__top">
+        <!-- Cover Image -->
+        <div class="player-cover">
+          <transition-group :name="transitionName">
+            <div class="player-cover__item" v-if="$index === currentTrackIndex"
+              :style="{ backgroundImage: `url(${track.cover})` }" v-for="(track, $index) in tracks" :key="$index">
+            </div>
+          </transition-group>
+        </div>
+
+        <!-- Player Controls -->
+        <div class="player-controls">
+          <!-- Favorite Button -->
+          <div class="player-controls__item -favorite" :class="{ active : currentTrack.favorited }" @click="favorite">
+            <svg class="icon">
+              <use xlink:href="#icon-heart-o"></use>
+            </svg>
+          </div>
+
+          <!-- External Link -->
+          <a :href="currentTrack.url" target="_blank" class="player-controls__item">
+            <svg class="icon">
+              <use xlink:href="#icon-link"></use>
+            </svg>
+          </a>
+
+          <!-- Previous Track Button -->
+          <div class="player-controls__item" @click="prevTrack">
+            <svg class="icon">
+              <use xlink:href="#icon-prev"></use>
+            </svg>
+          </div>
+
+          <!-- Next Track Button -->
+          <div class="player-controls__item" @click="nextTrack">
+            <svg class="icon">
+              <use xlink:href="#icon-next"></use>
+            </svg>
+          </div>
+
+          <!-- Play/Pause Button -->
+          <div class="player-controls__item -xl js-play" @click="play">
+            <svg class="icon">
+              <use xlink:href="#icon-pause" v-if="isTimerPlaying"></use>
+              <use xlink:href="#icon-play" v-else></use>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress" ref="progress">
+        <div class="progress__top">
+          <div class="album-info" v-if="currentTrack">
+            <div class="album-info__name">{{ currentTrack.artist }}</div>
+            <div class="album-info__track">{{ currentTrack.name }}</div>
+          </div>
+          <div class="progress__duration">{{ duration }}</div>
+        </div>
+        <div class="progress__bar" @click="clickProgress">
+          <div class="progress__current" :style="{ width : barWidth }"></div>
+        </div>
+        <div class="progress__time">{{ currentTime }}</div>
+      </div>
+    </div>
+
+    <!-- GitHub Link -->
+    <a href="https://github.com/muhammederdem/mini-player" target="_blank" class="github-btn">
+      See on GitHub
+    </a>
+  </div>
+
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  // Music Player Object
+  const musicPlayer = {
+    audio: null,
+    tracks: [
+    {
+        name: "Mekanın Sahibi",
+        artist: "Norm Ender",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/1.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/1.mp3",
+        url: "https://www.youtube.com/watch?v=z3wAjJXbYzA",
+        favorited: false,
+      },
+      {
+        name: "Everybody Knows",
+        artist: "Leonard Cohen",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/2.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/2.mp3",
+        url: "https://www.youtube.com/watch?v=Lin-a2lTelg",
+        favorited: true,
+      },
+      {
+        name: "Extreme Ways",
+        artist: "Moby",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/3.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/3.mp3",
+        url: "https://www.youtube.com/watch?v=ICjyAe9S54c",
+        favorited: false,
+      },
+      {
+        name: "Butterflies",
+        artist: "Sia",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/4.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/4.mp3",
+        url: "https://www.youtube.com/watch?v=kYgGwWYOd9Y",
+        favorited: false,
+      },
+      {
+        name: "The Final Victory",
+        artist: "Haggard",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/5.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/5.mp3",
+        url: "https://www.youtube.com/watch?v=0WlpALnQdN8",
+        favorited: true,
+      },
+      {
+        name: "Genius ft. Sia, Diplo, Labrinth",
+        artist: "LSD",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/6.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/6.mp3",
+        url: "https://www.youtube.com/watch?v=HhoATZ1Imtw",
+        favorited: false,
+      },
+      {
+        name: "The Comeback Kid",
+        artist: "Lindi Ortega",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/7.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/7.mp3",
+        url: "https://www.youtube.com/watch?v=me6aoX0wCV8",
+        favorited: true,
+      },
+      {
+        name: "Overdose",
+        artist: "Grandson",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/8.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/8.mp3",
+        url: "https://www.youtube.com/watch?v=00-Rl3Jlx-o",
+        favorited: false,
+      },
+      {
+        name: "Rag'n'Bone Man",
+        artist: "Human",
+        cover:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/img/9.jpg",
+        source:
+          "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/9.mp3",
+        url: "https://www.youtube.com/watch?v=L3wKzyIN1yk",
+        favorited: false,
+      },
+    ],
+    currentTrackIndex: 0,
+    isTimerPlaying: false,
+
+    // Method to initialize the player
+    init() {
+      this.audio = new Audio(this.tracks[this.currentTrackIndex].source);
+      this.updateTrackInfo();
+      this.addEventListeners();
+      this.preloadCovers();
+    },
+
+    // Method to update the track info displayed
+    updateTrackInfo() {
+      const track = this.tracks[this.currentTrackIndex];
+      document.getElementById("track-name").textContent = track.name;
+      document.getElementById("track-artist").textContent = track.artist;
+      document.getElementById("track-cover").src = track.cover;
+      document.getElementById("favorite").textContent = track.favorited ? "Unfavorite" : "Favorite";
+    },
+
+    // Method to add event listeners
+    addEventListeners() {
+      const playButton = document.getElementById("play");
+      const prevButton = document.getElementById("prev");
+      const nextButton = document.getElementById("next");
+      const favoriteButton = document.getElementById("favorite");
+      const progressBar = document.getElementById("progress-bar");
+
+      playButton.addEventListener("click", () => this.play());
+      prevButton.addEventListener("click", () => this.prevTrack());
+      nextButton.addEventListener("click", () => this.nextTrack());
+      favoriteButton.addEventListener("click", () => this.favorite());
+      progressBar.addEventListener("click", (e) => this.clickProgress(e));
+
+      this.audio.addEventListener("timeupdate", () => this.generateTime());
+      this.audio.addEventListener("loadedmetadata", () => this.generateTime());
+      this.audio.addEventListener("ended", () => this.nextTrack());
+    },
+
+    // Method to toggle play and pause
+    play() {
+      const playButton = document.getElementById("play");
+      if (this.audio.paused) {
+        this.audio.play();
+        this.isTimerPlaying = true;
+        playButton.textContent = "Pause";
+      } else {
+        this.audio.pause();
+        this.isTimerPlaying = false;
+        playButton.textContent = "Play";
+      }
+    },
+
+    // Method to generate and update time and progress bar
+    generateTime() {
+      const progress = document.getElementById("progress");
+      const currentTimeEl = document.getElementById("current-time");
+      const durationEl = document.getElementById("duration");
+
+      const width = (100 / this.audio.duration) * this.audio.currentTime;
+      progress.style.width = width + "%";
+
+      const curmin = Math.floor(this.audio.currentTime / 60);
+      const cursec = Math.floor(this.audio.currentTime % 60);
+      const durmin = Math.floor(this.audio.duration / 60);
+      const dursec = Math.floor(this.audio.duration % 60);
+
+      const formattedCurrentTime = `${curmin < 10 ? "0" : ""}${curmin}:${
+        cursec < 10 ? "0" : ""
+      }${cursec}`;
+      const formattedDuration = `${durmin < 10 ? "0" : ""}${durmin}:${
+        dursec < 10 ? "0" : ""
+      }${dursec}`;
+
+      currentTimeEl.textContent = formattedCurrentTime;
+      durationEl.textContent = formattedDuration;
+    },
+
+    // Method to handle progress bar click
+    clickProgress(e) {
+      const progressBar = document.getElementById("progress-bar");
+      const maxDuration = this.audio.duration;
+      const position = e.pageX - progressBar.offsetLeft;
+      const percentage = (100 * position) / progressBar.offsetWidth;
+
+      const newTime = (maxDuration * Math.min(Math.max(percentage, 0), 100)) / 100;
+      this.audio.currentTime = newTime;
+      this.audio.play();
+    },
+
+    // Method to skip to previous track
+    prevTrack() {
+      this.currentTrackIndex =
+        (this.currentTrackIndex > 0 ? this.currentTrackIndex - 1 : this.tracks.length - 1);
+      this.resetPlayer();
+    },
+
+    // Method to skip to next track
+    nextTrack() {
+      this.currentTrackIndex =
+        (this.currentTrackIndex < this.tracks.length - 1 ? this.currentTrackIndex + 1 : 0);
+      this.resetPlayer();
+    },
+
+    // Method to reset the player with the new track
+    resetPlayer() {
+      this.audio.src = this.tracks[this.currentTrackIndex].source;
+      this.audio.currentTime = 0;
+      this.updateTrackInfo();
+      setTimeout(() => {
+        if (this.isTimerPlaying) {
+          this.audio.play();
+        }
+      }, 300);
+    },
+
+    // Method to toggle favorite status
+    favorite() {
+      const track = this.tracks[this.currentTrackIndex];
+      track.favorited = !track.favorited;
+      this.updateTrackInfo(); // Update the favorite button text
+      console.log("Favorite status:", track.favorited);
+    },
+
+    // Method to preload track covers
+    preloadCovers() {
+      this.tracks.forEach((track) => {
+        const link = document.createElement("link");
+        link.rel = "prefetch";
+        link.href = track.cover;
+        link.as = "image";
+        document.head.appendChild(link);
+      });
+    },
+  };
+
+  // Initialize the music player
+  musicPlayer.init();
+});
+
+</script>
+
+</html>
